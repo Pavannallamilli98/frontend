@@ -1,0 +1,146 @@
+<div style="margin: 30px;">
+<div class="form-group">
+    <h1 style="text-align:center;">Fetching all stock Info</h1>
+    <button (click)="getstockInfo()">Click here to fetch all stock info</button>
+    <table class="table">
+        <tr>
+            <th>stockId</th>
+            <th>uniformItem</th>
+            <th>uniformType</th>
+            <th>quantityOnHand</th>
+            <th>unitPrice</th>
+            <th>size</th>
+            <th>status</th>
+            <th>vendorId</th>
+        </tr>
+        <tr *ngFor="let stock of stockModel">
+            <td>{{stock.stockId}}</td>
+            <td>{{stock.uniformItem}}</td>
+            <td>{{stock.uniformType}}</td>
+            <td>{{stock.quantityOnHand}}</td>
+            <td>{{stock.unitPrice}}</td>
+            <td>{{stock.size}}</td>
+            <td>{{stock.status}}</td>
+           <!--td>{{stock.vendorId|json}}</td-->
+           <td>{{stock.vendor.vendorId}}</td>          
+        </tr>
+    </table>
+</div>
+<div class="form-group">
+    <h1 style="text-align:center;">Searching stock details</h1>
+    <label for="stockId">stockId:</label>
+    <input type="text" [(ngModel)]="searchId"><button (click)="searchStock()">Search</button>
+    <table>
+        <tr><td>stockId:</td><td>{{stockInfo.stockId}}</td></tr>
+        <tr><td>uniformItem:</td><td>{{stockInfo.uniformItem}}</td></tr>
+        <tr><td>uniformType:</td><td>{{stockInfo.uniformType}}</td></tr>
+        <tr><td>quantityOnHand:</td><td>{{stockInfo.quantityOnHand}}</td></tr>
+        <tr><td>unitPrice:</td><td>{{stockInfo.unitPrice}}</td></tr>
+        <tr><td>size:</td><td>{{stockInfo.size}}</td></tr>
+        <tr><td>status:</td><td>{{stockInfo.status}}</td></tr>
+        <tr><td>vendorId:</td><td>{{stockInfo.vendor|json}}</td></tr>
+        <!--tr><td>vendorId:</td><td>{{stockInfo.vendor.vendorId}}</td></tr-->
+    
+    </table>
+</div>
+
+    <h1 style="text-align:center;">Add stock details </h1>
+    <form #stockForm="ngForm" (ngSubmit)="addStock()">
+        <div>
+            {{addStockInfoStatus|json}}
+        </div>
+        <div class="form-group">
+        <label>stock Id</label>
+        <input type="text" name="stockId" class="form-control" [(ngModel)]="addStockInfo.stockId" required #stockId = "ngModel">
+        <div *ngIf = "stockId.invalid && (stockId.touched||stockId.dirty)" class="alert alert-danger">
+            <div *ngIf="stockId.errors?.['required']">
+                * stockId is mandate
+            </div>
+            <div *ngIf="stockId.errors?.['minlength']">
+                Must have minimum 3 numbers
+            </div>
+        </div>
+    </div>
+    
+   
+        <div class="form-group">
+            <label>uniformItem</label>
+            <input type="text" name="uniformItem" class="form-control" [(ngModel)]="addStockInfo.uniformItem" required #uniformItem = "ngModel">
+            <div *ngIf = "uniformItem.invalid && (uniformItem.touched||uniformItem.dirty)" class="alert alert-danger">
+                <div *ngIf="uniformItem.errors?.['required']">
+                    * uniformItem is mandate
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>uniformType</label>
+            <input type="text" name="uniformType" class="form-control" [(ngModel)]="addStockInfo.uniformType" required #uniformType="ngModel">
+            <div *ngIf="uniformType.invalid && (uniformType.touched||uniformType.dirty)" class="alert alert-danger">
+                <div *ngIf="uniformType.errors?.['required']">
+                    * uniformType is mandate
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>quantityOnHand</label>
+            <input type="text" name="quantityOnHand" class="form-control" [(ngModel)]="addStockInfo.quantityOnHand" required #quantityOnHand = "ngModel">
+            <div *ngIf = "quantityOnHand.invalid && (quantityOnHand.touched||quantityOnHand.dirty)" class="alert alert-danger">
+                <div *ngIf="quantityOnHand.errors?.['required']">
+                    * quantityOnHand is mandate
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>unitPrice</label>
+            <input type="text" name="unitPrice" class="form-control" [(ngModel)]="addStockInfo.unitPrice" required #unitPrice = "ngModel">
+            <div *ngIf = "unitPrice.invalid && (unitPrice.touched||unitPrice.dirty)" class="alert alert-danger">
+                <div *ngIf="unitPrice.errors?.['required']">
+                    * unitPrice is mandate
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>size</label>
+            <select name="size" class="form-select" [(ngModel)]="addStockInfo.size" required #size="ngModel" appSize> 
+            <option value="--choose--">--Choose size--</option>
+            <option [value]="size" *ngFor="let size of sizes">{{size}}</option>
+            </select>
+            <div *ngIf = "size.invalid && (size.touched||size.dirty)" class="alert alert-danger">
+                <div *ngIf="size.errors?.['required']">
+                    * size is mandate
+                </div>
+                <div *ngIf="size.errors?.['appSize']">
+                    Please choose a size
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>status</label>
+            <input type="text" name="status" class="form-control" [(ngModel)]="addStockInfo.status" required #status = "ngModel">
+            <div *ngIf = "status.invalid && (status.touched||status.dirty)" class="alert alert-danger">
+                <div *ngIf="status.errors?.['required']">
+                    * status is mandate
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>vendorId</label>
+            <input type="text" name="vendorId" class="form-control" [(ngModel)]="addStockInfo.vendor.vendorId" required #vendorId = "ngModel">
+            <div *ngIf = "vendorId.invalid && (vendorId.touched||vendorId.dirty)" class="alert alert-danger">
+                <div *ngIf="vendorId.errors?.['required']">
+                    * vendorId is mandate
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+                <button type="submit" class="btn btn-primary" [disabled]="stockForm.invalid">Add stock details</button>&nbsp;
+                <button type="reset" class="btn btn-primary">Clear Form</button>
+         </div>
+        
+    </form>
+   </div>
+    
+ 
+  
